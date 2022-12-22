@@ -1,0 +1,17 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+mainmenu "Waymod"
+
+menu "compile time options "
+config HELLO_WORLD
+	bool "Compile hello world printf"
+    default y
+	help
+        Printf "Hello World" when starting
+
+endmenu
+
+
+source "core/Kconfig"

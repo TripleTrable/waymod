@@ -13,6 +13,14 @@ struct wmod_server {
 
 int main(int argc, char** argv)
 {
+#ifdef HELLO_WORLD
+    printf("Hello world\n");
+#endif
+
+#ifdef ENABLE_FOO_BAR
+    printf("FOO BAR\n");
+#endif
+
     struct wmod_server server;
     server.wl_display = wl_display_create();
     assert(server.wl_display);

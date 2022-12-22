@@ -1,0 +1,5 @@
+config WLR_USE_UNSTABLE
+	bool "Enable unstabe wlroots"
+	default y
+	help
+	  Enables unstable wlroots feature to user render
