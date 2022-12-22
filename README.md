@@ -9,6 +9,13 @@ Goals:
 - At least dwl feature parity
 - Kernel like modularity
 
+Dependencies:
+-------------
+
+- wlroots
+- wayland
+- wayland-protocol
+
 Building:
 ---------
 
