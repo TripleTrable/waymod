@@ -255,14 +255,21 @@ NOSTDINC_FLAGS  =
 CFLAGS_KERNEL	=
 AFLAGS_KERNEL	=
 
+WAYMODINCLUDE  := \
+		$(if $(KBUILD_SRC), -I$(srctree)/include) \
+		-Iinclude -Iinclude/generated/autoconf.h
+
 
 KBUILD_CPPFLAGS := -D__WAYMOD__
 
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+KBUILD_CFLAGS   := -Wall -Wundef -Wextra -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -std=gnu89
+		   $(shell pkg-config --cflags wlroots)\
+		   $(shell pkg-config --cflags wayland-scanner)\
+		   $(shell pkg-config --cflags wayland-server)\
+		   -std=gnu99 \
 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -276,7 +283,7 @@ export CPP AR NM STRIP OBJCOPY OBJDUMP
 export MAKE AWK PERL PYTHON
 export HOSTCXX HOSTCXXFLAGS CHECK CHECKFLAGS
 
-export KBUILD_CPPFLAGS NOSTDINC_FLAGS OBJCOPYFLAGS LDFLAGS
+export KBUILD_CPPFLAGS NOSTDINC_FLAGS OBJCOPYFLAGS LDFLAGS WAYMODINCLUDE
 export KBUILD_CFLAGS CFLAGS_KERNEL
 export KBUILD_AFLAGS AFLAGS_KERNEL
 export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
@@ -321,10 +328,11 @@ endif
 # of make so .config is not included in this case either (for *config).
 
 version_h := include/generated/version.h
+xdg_shell_protocols_h := include/xdg-shell-protocol.h
 
 no-dot-config-targets := clean mrproper distclean \
 			 cscope help% %docs check% coccicheck \
-			 $(version_h) headers_% archheaders archscripts \
+			 $(version_h) $(xdg_shell_protocols_h) headers_% archheaders archscripts \
 			 kernelversion %src-pkg
 
 config-targets := 0
@@ -563,7 +571,7 @@ waymod-objs	:= $(patsubst %,%/built-in.o, $(objs-y))
 waymod-all	:= $(waymod-objs)
 
 quiet_cmd_waymod = LD      $@
-      cmd_waymod = $(CC) $(LDFLAGS) -lwlroots -lwayland-server -o $@                          \
+      cmd_waymod = $(CC) $(LDFLAGS) $(shell pkg-config --libs wlroots) $(shell pkg-config --libs wayland-scanner) $(shell pkg-config --libs wayland-server) -o $@                          \
       -Wl,--start-group $(waymod-objs) -Wl,--end-group
 
 waymod: $(waymod-all) FORCE
@@ -609,7 +617,7 @@ endif
 # prepare2 creates a makefile if using a separate output directory
 prepare2: prepare3 outputmakefile
 
-prepare1: prepare2 $(version_h) include/config/auto.conf
+prepare1: prepare2 $(version_h) $(xdg_shell_protocols_h) include/config/auto.conf
 
 archprepare:
 
@@ -634,6 +642,12 @@ endef
 $(version_h): $(srctree)/Makefile FORCE
 	$(call filechk,version.h)
 
+WAYLAND_SCANER = `pkg-config --variable=wayland_scanner wayland-scanner`
+WAYLAND_PROTOCOLS = `pkg-config --variable=pkgdatadir wayland-protocols`
+
+$(xdg_shell_protocols_h): FORCE
+	$(WAYLAND_SCANER) server-header \
+		$(WAYLAND_PROTOCOLS)/stable/xdg-shell/xdg-shell.xml $@
 
 PHONY += headerdep
 headerdep:

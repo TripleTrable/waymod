@@ -1,5 +1,71 @@
 config WLR_USE_UNSTABLE
-	bool "Enable unstabe wlroots"
+	bool "Unstabe wlroots"
 	default y
 	help
 	  Enables unstable wlroots feature to user render
+
+config EXPORT_DMABUF
+	bool "Export dmabuf manager interface"
+	default y
+	help
+        Enables export dmabuf manager interface
+
+config SCREENCOPY
+	bool "Screencopy interface"
+	default y
+	help
+        Enables screencopy interface
+
+config DATA_CONTROL
+	bool "Data control interface"
+	default y
+	help
+        Enables data control interface
+
+config DATA_DEVICE
+	bool "Data device interface"
+	default y
+	help
+        Enables data device interface
+
+config GAMMA_CONTROL
+	bool "Gamma control interface"
+	default y
+	help
+        Enables gamma control interface
+
+config PRIMARY_SELECTION
+	bool "Primary selection interface"
+	default y
+	help
+        Enables primary selection interface
+
+config VIEWPORT
+	bool "Viewport interface"
+	default y
+	help
+        Enables viewport interface
+
+config SINGLE_PIXEL_BUFFER
+	bool "Single pixel buffer interface"
+	default y
+	help
+        Enables single pixel buffer interface
+
+config SUBCOMPOSITOR
+	bool "Subcompositor"
+	default y
+	help
+        Enables subcompositor
+
+config CURSOR
+	bool "Cursor"
+	default y
+	help
+        Enables cursor
+
+config XDG_SHELL
+	bool "Xdg shell v3"
+	default y
+	help
+        Enables xdg shell v3
