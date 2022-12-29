@@ -52,6 +52,7 @@
 # Generated include files
 #
 include/config
+include/xdg-shell-protocol.h
 include/generated
 arch/*/include/generated
 
@@ -84,3 +85,5 @@ all.config
 
 # Kdevelop4
 *.kdev4
+
+compile_commands.json
