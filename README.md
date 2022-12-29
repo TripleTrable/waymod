@@ -12,9 +12,11 @@ Goals:
 Dependencies:
 -------------
 
-- wlroots
+- wlroots v0.16 / the included submodule
 - wayland
 - wayland-protocol
+- pkg-config
+
 
 Building:
 ---------
