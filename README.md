@@ -64,9 +64,8 @@ Building:
 
  **Fedora 37:**
  ```
- sudo dnf install meson ninja make
+ sudo dnf install meson ninja make wayland-protocols-devel wayland-devel
  ```
-(wayland and wayland-protocols should be provided by default on most fedora systems)
 
 **Arch:**
 ```
